@@ -70,6 +70,50 @@
     <section class="contact" aria-labelledby="contact-title"><p>¿TIENES UN PROYECTO O UNA OPORTUNIDAD?</p><h2 id="contact-title">HAGAMOS<br>QUE <em>PASE.</em></h2><a href="mailto:emprendeska@gmail.com">EMPRENDESKA@GMAIL.COM <span aria-hidden="true">↗</span></a></section>
   </main>
   <footer><span>© <span id="year">2026</span> JULIÁN VARGAS</span><span>SOULDIESEL / CONTENIDO · DISEÑO · SOLUCIONES</span><a href="#inicio">VOLVER ARRIBA ↑</a></footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    (() => {
+      const header = document.querySelector('.site-header');
+      const nav = header.querySelector('nav');
+      const items = [...nav.querySelectorAll('a[href^="#"]')]
+        .map(link => ({ link, id: link.hash.slice(1), section: document.getElementById(link.hash.slice(1)) }))
+        .filter(item => item.section);
+      let current = null;
+      let scheduled = false;
+
+      function updateSection() {
+        scheduled = false;
+        const line = header.getBoundingClientRect().bottom + 24;
+        const active = items.find(({ section }) => {
+          const bounds = section.getBoundingClientRect();
+          return bounds.top <= line && bounds.bottom > line;
+        })?.id ?? null;
+        if (active === current) return;
+        current = active;
+        for (const { link, id } of items) {
+          if (id === active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        }
+        const link = items.find(item => item.id === active)?.link;
+        if (link && nav.scrollWidth > nav.clientWidth) {
+          const navBox = nav.getBoundingClientRect();
+          const linkBox = link.getBoundingClientRect();
+          nav.scrollTo({
+            left: nav.scrollLeft + linkBox.left - navBox.left - (navBox.width - linkBox.width) / 2,
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+          });
+        }
+      }
+      function scheduleUpdate() {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(updateSection);
+      }
+      addEventListener('scroll', scheduleUpdate, { passive: true });
+      addEventListener('resize', scheduleUpdate);
+      addEventListener('hashchange', scheduleUpdate);
+      updateSection();
+    })();
+  </script>
 </body>
 </html>
