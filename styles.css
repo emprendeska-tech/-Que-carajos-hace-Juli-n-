@@ -11,3 +11,12 @@
 @media(max-width:700px){#diseno-title,#animacion-title,#contenido-title,#music-title{font-size:clamp(43px,10vw,70px);line-height:.98}}
 .solution-options{list-style:none;margin:0 0 52px;padding:1px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#2b3217}.solution-options li{background:#d9fa47;display:flex;gap:24px;padding:26px 30px;min-height:152px}.solution-options li:last-child{grid-column:1/-1;min-height:120px}.solution-options .option-number{font:26px/1 var(--display);flex:0 0 36px}.solution-options strong{display:block;font:clamp(23px,2.2vw,33px)/1.08 var(--display);letter-spacing:.005em;max-width:560px}.solution-options p{font-size:16px;line-height:1.42;margin:11px 0 0;max-width:570px;color:#30371c}.solution-lead{margin-top:8px}
 @media(max-width:700px){.solution-options{grid-template-columns:1fr;margin-bottom:38px}.solution-options li,.solution-options li:last-child{grid-column:auto;min-height:0;padding:24px 20px;gap:16px}.solution-options .option-number{flex-basis:30px;font-size:22px}.solution-options strong{font-size:25px}}
+/* Mantener la navegación visible durante todo el recorrido. */
+.site-header{position:sticky;top:0;z-index:100;box-shadow:0 7px 20px #0005}
+section[id]{scroll-margin-top:100px}
+@media(max-width:700px){section[id]{scroll-margin-top:130px}}
+/* La sección en pantalla se reconoce también en la barra superior. */
+.site-header nav a{display:inline-flex;align-items:center;padding:9px 10px;border-radius:2px;transition:background-color .18s ease,color .18s ease}
+.site-header nav a[aria-current="location"],.site-header nav a[aria-current="location"]:hover{background:var(--acid);color:var(--ink);box-shadow:0 0 0 1px var(--acid)}
+@media(max-width:960px){.site-header nav{overflow-x:auto;min-width:0}}
+@media(prefers-reduced-motion:reduce){.site-header nav a{transition:none}}
