@@ -127,7 +127,11 @@
       }
       function applyMotionPreference() {
         if (motion.matches) { stop(heroVideo); stop(caseVideo); }
-        else { start(heroVideo); if (caseVisible) start(caseVideo); }
+        else {
+          if (heroVideo.getClientRects().length) start(heroVideo);
+          else stop(heroVideo);
+          if (caseVisible) start(caseVideo);
+        }
       }
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver(([entry]) => {
@@ -141,6 +145,7 @@
         caseVisible = true;
       }
       motion.addEventListener?.('change', applyMotionPreference);
+      window.addEventListener('resize', applyMotionPreference, { passive: true });
       applyMotionPreference();
     })();
     (() => {
